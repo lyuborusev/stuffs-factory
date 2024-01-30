@@ -1,0 +1,1 @@
+console.log("A factory called \"Stuffs are just Stuffs\" produces, well, Stuffs.");
