@@ -4,7 +4,7 @@
   "description": "A factory called \"Stuffs are just Stuffs\" produces, well, Stuffs.",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ENV_FILE=./config/.env.test jest"
   },
   "author": "Lyubomir Rusev",
   "license": "ISC",
@@ -13,7 +13,12 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.11",
     "@types/node": "^20.11.10",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
     "typescript": "^5.3.3"
   }
 }

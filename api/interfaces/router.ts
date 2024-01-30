@@ -24,19 +24,14 @@ export default class RouterCRUD implements RouterInterface {
     }
 
     intializeRoutes() {
-        // Create a new Tutorial
         this.router.post("/", this.controller.post);
 
-        // Retrieve all Tutorials
         this.router.get("/", this.controller.getAll);
-
-        // Retrieve a single Tutorial with id
         this.router.get("/:id", this.controller.get);
 
-        // Update a Tutorial with id
         this.router.put("/:id", this.controller.put);
+        this.router.patch("/:id", this.controller.patch);
 
-        // Delete a Tutorial with id
         this.router.delete("/:id", this.controller.delete);
     }
 };
