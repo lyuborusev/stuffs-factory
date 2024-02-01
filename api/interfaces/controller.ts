@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 export default interface ControllerCRUD {
     //Create
-    post(req: Request, res: Response): void;
+    post(req: Request, res: Response, next: NextFunction): void;
 
     //Read
     get(req: Request, res: Response): void;

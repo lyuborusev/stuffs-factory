@@ -1,35 +1,106 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import ControllerCRUD from "../../interfaces/controller";
+import { AppDataSource } from '../../database/datasource';
+import { Specification } from './specification.model';
 
 export default class SpecificationController implements ControllerCRUD {
-    post(req: Request, res: Response): void {
-        console.log('post');
-        res.status(200).json({});
-    }
-    get(req: Request, res: Response): void {
+    async post(req: Request, res: Response, next: NextFunction): Promise<void> {
 
-        console.log('get');
-        res.status(200).json({});
-    }
-    getAll(req: Request, res: Response): void {
+        const specRepo = AppDataSource.getRepository(Specification);
+        const spec = specRepo.create(req.body.body);
+        const data = await specRepo.save(spec);
 
-        console.log('getAll');
-        res.status(200).json({});
+        res.status(200).json(data);
     }
 
-    put(req: Request, res: Response): void {
-        console.log('put');
-        res.status(200).json({});
+    async put(req: Request, res: Response): Promise<void> {
+        const specRepo = AppDataSource.getRepository(Specification);
+        const result = await specRepo.update(
+            req.params.id,
+            req.body.body
+        );
 
+        if (result && result.affected && result.affected > 0) {
+            const data = await specRepo.findOneBy({
+                id: req.params.id
+            });
+
+            if (data) {
+                res.status(200).json(data);
+            } else {
+                throw new Error('Error: PUT request failed');
+            }
+        } else {
+            res.status(404).send();
+        }
     }
-    patch(req: Request, res: Response): void {
-        console.log('patch');
-        res.status(200).json({});
 
+    async patch(req: Request, res: Response): Promise<void> {
+        const specRepo = AppDataSource.getRepository(Specification);
+        const result = await specRepo.update(
+            req.params.id,
+            req.body.body
+        );
+
+        if (result && result.affected && result.affected > 0) {
+            const data = await specRepo.findOneBy({
+                id: req.params.id
+            });
+
+            if (data) {
+                res.status(200).json(data);
+            } else {
+                throw new Error('Error: PATCH request failed');
+            }
+        } else {
+            res.status(404).send();
+        }
     }
-    delete(req: Request, res: Response): void {
-        console.log('delete');
-        res.status(200).json({});
 
+    async get(req: Request, res: Response): Promise<void> {
+        const specRepo = AppDataSource.getRepository(Specification);
+        const data = await specRepo.findOneBy({
+            id: req.params.id
+        });
+
+        if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).send();
+        }
+    }
+
+    async getAll(req: Request, res: Response): Promise<void> {
+
+        const specRepo = AppDataSource.getRepository(Specification);
+        const data = await specRepo.find();
+
+        res.status(200).json({
+            data: data
+        });
+    }
+
+    async delete(req: Request, res: Response): Promise<void> {
+
+        const specRepo = AppDataSource.getRepository(Specification);
+        const result = await specRepo.softDelete({
+            id: req.params.id
+        });
+
+
+        if (result && result.affected && result.affected > 0) {
+            const data = await specRepo.find({
+                where: { id: req.params.id },
+                withDeleted: true
+            });
+
+            if (data) {
+                res.status(202).json(data);
+            } else {
+                throw new Error('Error: PATCH request failed');
+            }
+        } else {
+            res.status(404).send();
+        }
     }
 }

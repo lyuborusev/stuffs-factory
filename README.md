@@ -2,9 +2,13 @@
 
 ## Basic tech stack
 
-Node.js
-Express.js
+Node
+Express
 TypeScript
+Supertest
+Jest
+Joi
+TypeORM
 
 ## Architecture
 

@@ -1,6 +1,17 @@
 import request from 'supertest';
 import app from '../api/server'
 import { SpecificationJSon, UUIDv4, UpdatedSpecificationJSon } from './data';
+import { initializeDatasource } from '../api/database/datasource';
+
+let server: any | null = null;
+beforeAll(async () => {
+    await initializeDatasource();
+    server = app.listen(3000);
+});
+
+afterAll(async () => {
+    await new Promise(resolve => server.close(resolve));
+});
 
 test('POST /specifications', async () => {
     const response = await request(app)

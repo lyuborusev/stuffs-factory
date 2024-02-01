@@ -41,7 +41,7 @@ export default function JoiValidator(schemeCRUD: ValidatorSchemas) {
 
         } catch (e: any) {
             console.log(e.message);
-            res.status(500).send(e.message);
+            res.status(400).send(e.message);
         }
     }
 }
