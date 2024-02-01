@@ -1,18 +1,35 @@
 import request from 'supertest';
 import app from '../api/server'
-
-let server: any | null = null;
-beforeAll(done => {
-    server = app.listen(3000);
-    done();
-})
-
-afterAll(async () => {
-    await new Promise(resolve => server.close(resolve));
-});
+import { PartJson, UUIDv4, UpdatedPartJson } from './data';
 
 test('POST /parts', async () => {
-    const response = await request(app).post('/parts');
+    const response = await request(app)
+        .post('/parts')
+        .send(PartJson)
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json');
+
+    expect(response.status).toBe(200);
+})
+
+test('PUT /parts/id', async () => {
+    const response = await request(app)
+        .put(`/parts/${UUIDv4}`)
+        .send(UpdatedPartJson)
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json');;
+
+    expect(response.status).toBe(200);
+})
+
+test('PATCH /parts/id', async () => {
+    const response = await request(app)
+        .patch(`/parts/${UUIDv4}`)
+        .send({
+            name: UpdatedPartJson.name
+        })
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json');;;
 
     expect(response.status).toBe(200);
 })
@@ -25,25 +42,13 @@ test('GET /parts', async () => {
 
 
 test('GET /parts/id', async () => {
-    const response = await request(app).get('/parts/1');
-
-    expect(response.status).toBe(200);
-})
-
-test('PUT /parts/id', async () => {
-    const response = await request(app).put('/parts/1');
-
-    expect(response.status).toBe(200);
-})
-
-test('PATCH /parts/id', async () => {
-    const response = await request(app).patch('/parts/1');
+    const response = await request(app).get(`/parts/${UUIDv4}`);
 
     expect(response.status).toBe(200);
 })
 
 test('DELETE /parts/id', async () => {
-    const response = await request(app).delete('/parts/1');
+    const response = await request(app).delete(`/parts/${UUIDv4}`);
 
     expect(response.status).toBe(200);
 })

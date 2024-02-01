@@ -9,11 +9,13 @@
   "author": "Lyubomir Rusev",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "joi": "^17.12.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.11",
+    "@types/joi": "^17.2.3",
     "@types/node": "^20.11.10",
     "@types/supertest": "^6.0.2",
     "jest": "^29.7.0",

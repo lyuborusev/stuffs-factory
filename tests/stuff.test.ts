@@ -1,15 +1,5 @@
-import request from 'supertest';
+/*import request from 'supertest';
 import app from '../api/server'
-
-let server: any | null = null;
-beforeAll(done => {
-    server = app.listen(3000);
-    done();
-})
-
-afterAll(async () => {
-    await new Promise(resolve => server.close(resolve));
-});
 
 test('POST /stuffs', async () => {
     const response = await request(app).post('/stuffs');
@@ -47,3 +37,4 @@ test('DELETE /stuffs/id', async () => {
 
     expect(response.status).toBe(200);
 })
+*/

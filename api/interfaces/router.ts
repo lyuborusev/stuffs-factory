@@ -1,6 +1,5 @@
-import { Router } from "express";
+import { RequestHandler, Router } from 'express';
 import ControllerCRUD from './controller'
-
 
 export default interface RouterInterface {
     router: Router;
@@ -12,9 +11,11 @@ export default interface RouterInterface {
 export default class RouterCRUD implements RouterInterface {
     router: Router = Router();
     controller: ControllerCRUD;
+    validator: RequestHandler;
 
-    constructor(controller: ControllerCRUD) {
+    constructor(validator: RequestHandler, controller: ControllerCRUD) {
         this.controller = controller;
+        this.validator = validator;
 
         this.intializeRoutes();
     }
@@ -24,14 +25,16 @@ export default class RouterCRUD implements RouterInterface {
     }
 
     intializeRoutes() {
-        this.router.post("/", this.controller.post);
+        this.router.use('/:id?', this.validator);
 
-        this.router.get("/", this.controller.getAll);
-        this.router.get("/:id", this.controller.get);
+        this.router.post('/', this.controller.post);
 
-        this.router.put("/:id", this.controller.put);
-        this.router.patch("/:id", this.controller.patch);
+        this.router.get('/', this.controller.getAll);
+        this.router.get('/:id', this.controller.get);
 
-        this.router.delete("/:id", this.controller.delete);
+        this.router.put('/:id', this.controller.put);
+        this.router.patch('/:id', this.controller.patch);
+
+        this.router.delete('/:id', this.controller.delete);
     }
 };

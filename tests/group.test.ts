@@ -1,18 +1,35 @@
 import request from 'supertest';
 import app from '../api/server'
-
-let server: any | null = null;
-beforeAll(done => {
-    server = app.listen(3000);
-    done();
-})
-
-afterAll(async () => {
-    await new Promise(resolve => server.close(resolve));
-});
+import { GroupsJson, UUIDv4, UpdatedGroupsJson } from './data';
 
 test('POST /groups', async () => {
-    const response = await request(app).post('/groups');
+    const response = await request(app)
+        .post('/groups')
+        .send(GroupsJson)
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json');
+
+    expect(response.status).toBe(200);
+})
+
+test('PUT /groups/id', async () => {
+    const response = await request(app)
+        .put(`/groups/${UUIDv4}`)
+        .send(UpdatedGroupsJson)
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json');
+
+    expect(response.status).toBe(200);
+})
+
+test('PATCH /groups/id', async () => {
+    const response = await request(app)
+        .patch(`/groups/${UUIDv4}`)
+        .send({
+            name: UpdatedGroupsJson.name
+        })
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json');
 
     expect(response.status).toBe(200);
 })
@@ -25,25 +42,13 @@ test('GET /groups', async () => {
 
 
 test('GET /groups/id', async () => {
-    const response = await request(app).get('/groups/1');
-
-    expect(response.status).toBe(200);
-})
-
-test('PUT /groups/id', async () => {
-    const response = await request(app).put('/groups/1');
-
-    expect(response.status).toBe(200);
-})
-
-test('PATCH /groups/id', async () => {
-    const response = await request(app).patch('/groups/1');
+    const response = await request(app).get(`/groups/${UUIDv4}`);
 
     expect(response.status).toBe(200);
 })
 
 test('DELETE /groups/id', async () => {
-    const response = await request(app).delete('/groups/1');
+    const response = await request(app).delete(`/groups/${UUIDv4}`);
 
     expect(response.status).toBe(200);
 })
