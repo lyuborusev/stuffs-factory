@@ -32,19 +32,19 @@ export default class GroupValidator {
 
 
             if (!group) {
-                res.status(404).send(`Group ${req.params.id} could not be resolved!`);
+                res.status(404).send({ errors: [{ message: `Group ${req.params.id} could not be resolved!` }] });
                 return;
             }
 
             if (group.specification?.completed == true) {
-                res.status(400).send(`Group ${req.params.id} is part of a 'completed' Specification and cannot be modified!`);
+                res.status(400).send({ errors: [{ message: `Group ${req.params.id} is part of a 'completed' Specification and cannot be modified!` }] });
                 return;
             }
 
             next();
 
         } catch (e: any) {
-            res.status(400).send(e.message);
+            res.status(400).send({ errors: [{ message: e.message }] });
         }
     }
 };

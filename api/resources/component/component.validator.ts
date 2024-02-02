@@ -36,19 +36,19 @@ export default class ComponentValidator {
             });
 
             if (!component) {
-                res.status(404).send(`Component ${req.params.id} could not be resolved!`);
+                res.status(404).send({ errors: [{ message: `Component ${req.params.id} could not be resolved!` }] });
                 return;
             }
 
             if (component.group?.specification?.completed == true) {
-                res.status(400).send(`Component ${req.params.id} is part of a 'completed' Specification and cannot be modified!`);
+                res.status(400).send({ errors: [{ message: `Component ${req.params.id} is part of a 'completed' Specification and cannot be modified!` }] });
                 return;
             }
 
             next();
 
         } catch (e: any) {
-            res.status(400).send(e.message);
+            res.status(400).send({ errors: [{ message: e.message }] });
         }
     }
 };

@@ -31,12 +31,12 @@ export default class SpecificationValidator {
             });
 
             if (!specification) {
-                res.status(404).send(`Specification ${req.params.id} could not be resolved!`);
+                res.status(404).send({ errors: [{ message: `Specification ${req.params.id} could not be resolved!` }] });
                 return;
             }
 
             if (specification.completed == true) {
-                res.status(400).send(`Specification ${req.params.id} is 'completed' and cannot be modified!`);
+                res.status(400).send({ errors: [{ message: `Specification ${req.params.id} is 'completed' and cannot be modified!` }] });
                 return;
             }
 
@@ -51,7 +51,7 @@ export default class SpecificationValidator {
                 })
 
                 if (groups.length == 0) {
-                    res.status(400).send(`Specification ${req.params.id} could not be 'completed' without defining 'groups', 'components' and their 'parts'`);
+                    res.status(400).send({ errors: [{ message: `Specification ${req.params.id} could not be 'completed' without defining 'groups', 'components' and their 'parts'` }] });
                     return;
                 }
 
@@ -67,7 +67,7 @@ export default class SpecificationValidator {
                     }
                 })
                 if (components.length == 0) {
-                    res.status(400).send(`Specification ${req.params.id} could not be 'completed' without defining 'components' and their 'parts'`);
+                    res.status(400).send({ errors: [{ message: `Specification ${req.params.id} could not be 'completed' without defining 'components' and their 'parts'` }] });
                     return;
                 }
 
@@ -84,7 +84,7 @@ export default class SpecificationValidator {
                     const conponentIds: (string | undefined)[] = componentsWithoutParts.flatMap((c) => {
                         return c.id;
                     });
-                    res.status(400).send(`Specification ${req.params.id} could not be 'completed' because the following components do not have parts set! ${conponentIds}`);
+                    res.status(400).send({ errors: [{ message: `Specification ${req.params.id} could not be 'completed' because the following components do not have parts set! ${conponentIds}` }] });
                     return;
                 }
             }
@@ -92,7 +92,7 @@ export default class SpecificationValidator {
             next();
 
         } catch (e: any) {
-            res.status(400).send(e.message);
+            res.status(400).send({ errors: [{ message: e.message }] });
         }
     }
 };
