@@ -22,7 +22,8 @@ export class Group {
     @ManyToOne(() => Specification, (spec) => spec.groups) // note: we will create author property in the Photo class below
     specification: Specification | undefined
 
-
-    @OneToMany(() => Component, (component) => component.group)
+    @OneToMany(() => Component, (component) => component.group, {
+        cascade: true
+    })
     components: Group[] | undefined
 }

@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import { DataRepository } from "../database/repository";
 import { ObjectLiteral } from "typeorm";
+import { controllerErrorHandler } from "./error.handler";
 
 export default class RelationResolver<EntityType extends ObjectLiteral> {
     private entityType: new () => EntityType;
@@ -24,19 +25,30 @@ export default class RelationResolver<EntityType extends ObjectLiteral> {
     }
 
     intializeRoutes() {
-        this.router.post('/', this.ResolveFunction);
+        this.router.post('/', controllerErrorHandler(this.ResolveFunction));
+
+        this.router.get('/', controllerErrorHandler(this.ResolveFunction));
+        this.router.get('/:id', controllerErrorHandler(this.ResolveFunction));
+
+        this.router.put('/:id', controllerErrorHandler(this.ResolveFunction));
+        this.router.patch('/:id', controllerErrorHandler(this.ResolveFunction));
+
+        this.router.delete('/:id', controllerErrorHandler(this.ResolveFunction));
     }
 
     ResolveFunction = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
-            const repo = new DataRepository<EntityType>(this.entityType);
-            const relation = await repo.getById(req.body[this.relationId]);
-            if (!relation) {
-                res.status(400).send(`Relation ${this.relationId} could not be resolved!`);
-                return;
-            }
+            if (req.body[this.relationId]) {
+                const repo = new DataRepository<EntityType>(this.entityType);
+                const relation = await repo.getById(req.body[this.relationId]);
+                if (!relation) {
+                    res.status(400).send(`Relation ${this.relationId} could not be resolved!`);
+                    return;
+                }
 
-            req.body[this.relationName] = relation;
+                delete req.body[this.relationId];
+                req.body[this.relationName] = relation;
+            }
             next();
 
         } catch (e: any) {

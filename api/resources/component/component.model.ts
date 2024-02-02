@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm"
 import { Group } from "../group/group.model"
+import { Part } from "../part/part.model"
 
 @Entity()
 export class Component {
@@ -21,6 +22,9 @@ export class Component {
     @DeleteDateColumn()
     deleted: Date | undefined
 
-    @ManyToOne(() => Group, (group) => group.components) // note: we will create author property in the Photo class below
+    @ManyToOne(() => Group, (group) => group.components)
     group: Group | undefined
+
+    @ManyToOne(() => Part, (part)=> part.components)
+    part: Part | undefined
 }

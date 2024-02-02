@@ -7,7 +7,8 @@ export default class PartSchemes extends ValidatorCRUD {
         super(
             joi.object({
                 name: joi.string().required(),
-            }), joi.object({
+            }),
+            joi.object({
                 name: joi.string().optional(),
             })
         )

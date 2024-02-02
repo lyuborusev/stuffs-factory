@@ -21,6 +21,8 @@ export class Specification {
     @Column('boolean', { default: false })
     completed: boolean | undefined
 
-    @OneToMany(() => Group, (group) => group.specification)
+    @OneToMany(() => Group, (group) => group.specification, {
+        cascade: true
+    })
     groups: Group[] | undefined
 }

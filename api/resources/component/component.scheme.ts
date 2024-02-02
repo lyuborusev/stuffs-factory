@@ -12,6 +12,7 @@ export default class ComponentSchemes extends ValidatorCRUD {
                 groupCode: joi.string().required()
             }),
             joi.object({
+                partId: joi.string().uuid().optional(),
                 name: joi.string().optional(),
                 description: joi.string().optional(),
                 partCode: joi.string().optional(),

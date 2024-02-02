@@ -5,9 +5,11 @@ import { Component } from './component.model';
 import ControllerCRUD from '../../framework/framework.controller';
 import RelationResolver from '../../middleware/relation.resolver';
 import { Group } from '../group/group.model';
+import { Part } from '../part/part.model';
 
 export default [
     new JoiValidator(new ComponentSchemes()).getRouter(),
     new RelationResolver<Group>('groupId', 'group', Group).getRouter(),
+    new RelationResolver<Part>('partId', 'part', Part).getRouter(),
     new RouterCRUD(new ControllerCRUD(Component)).getRouter()
 ];
