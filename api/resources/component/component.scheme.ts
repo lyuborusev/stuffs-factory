@@ -1,10 +1,11 @@
 import joi from 'joi'
-import { ValidatorCRUD } from '../../interfaces/validator';
+import ValidatorCRUD from '../../framework/framework.validator'
 
 export default class ComponentSchemes extends ValidatorCRUD {
     constructor() {
         super(
             joi.object({
+                groupId: joi.string().uuid().required(),
                 name: joi.string().required(),
                 description: joi.string().required(),
                 partCode: joi.string().required(),

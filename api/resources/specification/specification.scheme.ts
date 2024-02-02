@@ -1,5 +1,5 @@
 import joi from 'joi'
-import { ValidatorCRUD } from '../../interfaces/validator';
+import ValidatorCRUD from '../../framework/framework.validator'
 
 export default class SpecificationSchemes extends ValidatorCRUD {
     constructor() {

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, DeleteDateColumn, OneToMany } from "typeorm"
+import { Group } from "../group/group.model"
 
 @Entity()
 export class Specification {
@@ -19,4 +20,7 @@ export class Specification {
 
     @Column('boolean', { default: false })
     completed: boolean | undefined
+
+    @OneToMany(() => Group, (group) => group.specification)
+    groups: Group[] | undefined
 }

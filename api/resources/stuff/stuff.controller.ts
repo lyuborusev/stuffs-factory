@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import ControllerCRUD from "../../interfaces/controller";
+import ControllerInterface from "../../interfaces/controller";
 
-export default class StuffController implements ControllerCRUD {
+export default class StuffController implements ControllerInterface {
     post(req: Request, res: Response): void {
         console.log('post');
         res.status(200).json({});

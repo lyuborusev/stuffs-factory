@@ -1,5 +1,5 @@
-import server from './server';
 import { initializeDatasource } from './database/datasource';
+import server from './server';
 
 const main = async () => {
     await initializeDatasource();

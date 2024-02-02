@@ -1,11 +1,17 @@
 import { DataSource } from "typeorm"
 import { Specification } from "../resources/specification/specification.model";
+import { Group } from "../resources/group/group.model";
+import { Component } from "../resources/component/component.model";
 
 export const AppDataSource = new DataSource({
     type: "sqlite",
     database: ":memory:",
     dropSchema: true,
-    entities: [Specification],
+    entities: [
+        Specification,
+        Group,
+        Component
+    ],
     synchronize: true,
     logging: false,
 });

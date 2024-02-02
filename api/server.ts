@@ -20,10 +20,10 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use(express.json());
 
-app.use('/specifications', SpecificationRouter);
-app.use('/components', ComponentRouter);
-app.use('/groups', GroupRouter);
-app.use('/parts', PartRouter);
+app.use('/specifications', ...SpecificationRouter);
+app.use('/groups', ...GroupRouter);
+app.use('/components', ...ComponentRouter);
+app.use('/parts', ...PartRouter);
 //app.use('/stuffs', StuffRouter);
 
 app.use(errorHandler);
