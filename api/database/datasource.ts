@@ -16,10 +16,6 @@ export const AppDataSource = new DataSource({
     ],
     synchronize: true,
     logging: false,
-
-
-    //logging: true, // Enable query logging
-    //logger: 'advanced-console', // Use advanced console logger
 });
 
 export async function initializeDatasource() {
