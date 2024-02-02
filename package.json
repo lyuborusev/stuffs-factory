@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node api/index.ts",
-    "test": "ENV_FILE=./config/.env.test jest"
+    "test": "ENV_FILE=./config/.env.test jest --runInBand"
   },
   "author": "Lyubomir Rusev",
   "license": "ISC",

@@ -7,16 +7,11 @@ export default class SpecificationSchemes extends ValidatorCRUD {
             joi.object({
                 name: joi.string().required(),
                 codeNumber: joi.string().required(),
-
-                //created: joi.date(),
-                //completed: joi.boolean()
             }),
             joi.object({
                 name: joi.string().optional(),
                 codeNumber: joi.string().optional(),
-
-                //created: joi.date(),
-                //completed: joi.boolean()
+                completed: joi.boolean().optional()
             })
         )
     }
