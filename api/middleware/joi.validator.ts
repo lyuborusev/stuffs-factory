@@ -54,11 +54,12 @@ export default class JoiValidator {
                 const validated = await scheme?.validateAsync(req, {
                     abortEarly: false
                 });
+
                 next();
 
             } catch (e: any) {
-                console.log(e.message);
-                res.status(400).send(e.message);
+                res.status(400).send({ errors: [{ message: e.message }] });
+                return;
             }
         }
     }

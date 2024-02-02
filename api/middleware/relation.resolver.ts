@@ -52,7 +52,6 @@ export default class RelationResolver<EntityType extends ObjectLiteral> {
             next();
 
         } catch (e: any) {
-            console.log(e.message);
             res.status(400).send(e.message);
         }
     }
