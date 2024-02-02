@@ -30,6 +30,7 @@ test('Specification Completed', async () => {
         .set('Accept', 'application/json');
     expect(created.status).toBe(200);
 
+    //Try to complete a Specification without Groups
     await tryCompleteSpec(created.body.id, 400);
 
     const group = await request(app)
@@ -42,6 +43,7 @@ test('Specification Completed', async () => {
         .set('Accept', 'application/json');
     expect(group.status).toBe(200);
 
+    //Try to complete a Specification without Components
     await tryCompleteSpec(created.body.id, 400);
 
     const component = await request(app)
@@ -54,6 +56,7 @@ test('Specification Completed', async () => {
         .set('Accept', 'application/json');
     expect(component.status).toBe(200);
 
+    //Try to complete a Specification with Component without Part
     await tryCompleteSpec(created.body.id, 400);
 
     const part = await request(app)
@@ -76,10 +79,10 @@ test('Specification Completed', async () => {
         .set('Accept', 'application/json');
     expect(componentUpdated.status).toBe(200);
 
-    console.log(created.body)
-    const result = await tryCompleteSpec(created.body.id, 200);
-    console.log(result.body)
+    // Complete the specification when all criteria are met
+    await tryCompleteSpec(created.body.id, 200);
 
+    // Try to modify the Specification after it was completed
     const specificationUpdated = await request(app)
         .patch(`/specifications/${created.body.id}`)
         .send({
@@ -89,5 +92,25 @@ test('Specification Completed', async () => {
         .set('Accept', 'application/json');
     expect(specificationUpdated.status).toBe(400);
 
-    console.log(specificationUpdated.body)
+    // Try to modify the Group of the Specification
+
+    const groupUpdated = await request(app)
+        .patch(`/groups/${group.body.id}`)
+        .send({
+            name: "modify after completed"
+        })
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json');
+    expect(groupUpdated.status).toBe(400);
+
+    // Try to modify the Component of the Specification
+
+    const completedComponentUpdated = await request(app)
+        .patch(`/components/${component.body.id}`)
+        .send({
+            name: "modify after completed"
+        })
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json');
+    expect(completedComponentUpdated.status).toBe(400);
 })

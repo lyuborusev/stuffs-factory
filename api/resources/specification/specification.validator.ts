@@ -24,17 +24,18 @@ export default class SpecificationValidator {
 
     async ValidationFunction(req: express.Request, res: express.Response, next: express.NextFunction) {
         try {
-            const specification = await AppDataSource.getRepository(Specification).findOneBy({
-                id: req.params.id
+            const specification = await AppDataSource.getRepository(Specification).findOne({
+                where: {
+                    id: req.params.id
+                },
             });
 
             if (!specification) {
-                res.status(400).send(`Specification ${req.params.id} could not be resolved!`);
+                res.status(404).send(`Specification ${req.params.id} could not be resolved!`);
                 return;
             }
 
             if (specification.completed == true) {
-                console.log("HEREEE")
                 res.status(400).send(`Specification ${req.params.id} is 'completed' and cannot be modified!`);
                 return;
             }
@@ -91,7 +92,6 @@ export default class SpecificationValidator {
             next();
 
         } catch (e: any) {
-            console.log(e.message);
             res.status(400).send(e.message);
         }
     }
