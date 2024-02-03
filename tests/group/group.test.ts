@@ -12,7 +12,7 @@ afterAll(async () => {
     await server.close();
 });
 
-test('POST /groups', async () => {
+async function arrangeSpecificationGroup() {
     const specification = await request(app)
         .post('/specifications')
         .send(SpecificationJSon)
@@ -31,6 +31,25 @@ test('POST /groups', async () => {
         .set('Accept', 'application/json');
 
     expect(group.status).toBe(200);
+
+    return { specification, group };
+}
+
+test('POST /groups', async () => {
+    const specification = await request(app)
+        .post('/specifications')
+        .send({
+            ...GroupsJson,
+            specificationId: UUIDv4
+        })
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json');
+
+    expect(specification.status).toBe(400);
+})
+
+test('POST /groups', async () => {
+    await arrangeSpecificationGroup();
 })
 
 test('PUT /groups/id', async () => {
@@ -47,24 +66,7 @@ test('PUT /groups/id', async () => {
 })
 
 test('PUT /groups/id', async () => {
-    const specification = await request(app)
-        .post('/specifications')
-        .send(SpecificationJSon)
-        .set('Content-Type', 'application/json')
-        .set('Accept', 'application/json');
-
-    expect(specification.status).toBe(200);
-
-    const group = await request(app)
-        .post('/groups')
-        .send({
-            ...GroupsJson,
-            specificationId: specification.body.id
-        })
-        .set('Content-Type', 'application/json')
-        .set('Accept', 'application/json');
-
-    expect(group.status).toBe(200);
+    const { specification, group } = await arrangeSpecificationGroup();
 
     const updateGroup = await request(app)
         .put(`/groups/${group.body.id}`)
@@ -92,24 +94,7 @@ test('PATCH /groups/id', async () => {
 
 
 test('PATCH /groups/id', async () => {
-    const specification = await request(app)
-        .post('/specifications')
-        .send(SpecificationJSon)
-        .set('Content-Type', 'application/json')
-        .set('Accept', 'application/json');
-
-    expect(specification.status).toBe(200);
-
-    const group = await request(app)
-        .post('/groups')
-        .send({
-            ...GroupsJson,
-            specificationId: specification.body.id
-        })
-        .set('Content-Type', 'application/json')
-        .set('Accept', 'application/json');
-
-    expect(group.status).toBe(200);
+    const { specification, group } = await arrangeSpecificationGroup();
 
     const patchedGroup = await request(app)
         .patch(`/groups/${group.body.id}`)
@@ -139,4 +124,12 @@ test('DELETE /groups/id', async () => {
     const response = await request(app).delete(`/groups/${UUIDv4}`);
 
     expect(response.status).toBe(404);
+})
+
+test('DELETE /groups/id', async () => {
+    const { specification, group } = await arrangeSpecificationGroup();
+
+    const response = await request(app).delete(`/groups/${group.body.id}`);
+
+    expect(response.status).toBe(202);
 })

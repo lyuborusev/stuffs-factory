@@ -33,15 +33,11 @@ const UpdatedPartJson = {
 const SpecificationJSon = {
     name: 'Specification name',
     codeNumber: '1234',
-    //created: '1.1.2024',
-    //completed: 'false'
 }
 
 const UpdatedSpecificationJSon = {
     name: 'Updated Specification name',
     codeNumber: '1234',
-    //created: '1.1.2024',
-    //completed: 'true'
 }
 
 export {
