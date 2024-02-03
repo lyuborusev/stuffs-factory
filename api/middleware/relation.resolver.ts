@@ -42,7 +42,7 @@ export default class RelationResolver<EntityType extends ObjectLiteral> {
                 const repo = new DataRepository<EntityType>(this.entityType);
                 const relation = await repo.getById(req.body[this.relationId]);
                 if (!relation) {
-                    res.status(400).send({ errors: [{ message: `Relation ${this.relationId} could not be resolved!` }] });
+                    res.status(404).send({ errors: [{ message: `Relation ${this.relationId} could not be resolved!` }] });
                     return;
                 }
 
