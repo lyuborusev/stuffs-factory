@@ -1,5 +1,24 @@
 import { DeepPartial, ObjectLiteral, Repository } from "typeorm";
 import { AppDataSource } from "./datasource";
+import { table } from "console";
+
+export type PaginatedEntityData<EntityType extends ObjectLiteral> = {
+    data: EntityType[]
+    take: number
+    skip: number
+    total: number
+}
+
+export class PaginationData {
+    take: number;
+    skip: number;
+
+    constructor(take: number | undefined, skip: number | undefined) {
+        this.take = take ? parseInt(take.toString(), 10) : 10;
+        this.skip = skip ? parseInt(skip.toString(), 10) : 10;
+    }
+
+}
 
 export class DataRepository<EntityType extends ObjectLiteral> {
     private repo: Repository<EntityType>;
@@ -27,11 +46,23 @@ export class DataRepository<EntityType extends ObjectLiteral> {
             return null;
         }
     }
-    async getAll(): Promise<EntityType[]> {
-        const data = await this.repo.find({
-            loadRelationIds: true
+
+    async getAll(pagination: PaginationData): Promise<PaginatedEntityData<EntityType>> {
+        const [data, total] = await this.repo.findAndCount({
+            loadRelationIds: true,
+            take: pagination.take,
+            skip: pagination.skip,
         });
-        return data;
+        const result: PaginatedEntityData<EntityType> = {
+            data: data,
+            total: total,
+            take: pagination.take,
+            skip: pagination.skip,
+
+        };
+
+        console.log(result)
+        return result;
     }
 
     async delete(index: any): Promise<EntityType | null> {

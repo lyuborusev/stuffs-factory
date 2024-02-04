@@ -1,6 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { DataRepository } from "../database/repository";
+import { DataRepository, PaginationData } from "../database/repository";
 import { ObjectLiteral } from "typeorm";
+
+interface QueryPagination {
+    take?: number,
+    skip?: number
+}
 
 export default class ControllerCRUD<EntityType extends ObjectLiteral> {
     private entityType: new () => EntityType;
@@ -54,13 +59,14 @@ export default class ControllerCRUD<EntityType extends ObjectLiteral> {
         }
     }
 
-    getAll = async (req: Request, res: Response): Promise<void> => {
+    getAll = async (req: Request<{}, {}, {}, QueryPagination>, res: Response): Promise<void> => {
+        const { take, skip }: QueryPagination = req.query;
+        const pagination: PaginationData = new PaginationData(take, skip);
+        console.log(pagination)
         const specRepo = new DataRepository<EntityType>(this.entityType);
-        const data = await specRepo.getAll();
-
-        res.status(200).json({
-            data: data
-        });
+        const data = await specRepo.getAll(pagination);
+        console.log(data)
+        res.status(200).json(data);
     }
 
     delete = async (req: Request, res: Response): Promise<void> => {

@@ -45,7 +45,12 @@ export default class ValidatorCRUD implements ValidatorSchemas {
     }
 
     getAll(): joi.ObjectSchema<any> {
-        return joi.object({}).unknown(true);
+        return joi.object({
+            query: joi.object({
+                take: joi.number().raw().optional(),
+                skip: joi.number().raw().optional(),
+            })
+        }).unknown(true);
     }
 
     delete(): joi.ObjectSchema<any> {
