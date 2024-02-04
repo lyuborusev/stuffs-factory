@@ -62,10 +62,8 @@ export default class ControllerCRUD<EntityType extends ObjectLiteral> {
     getAll = async (req: Request<{}, {}, {}, QueryPagination>, res: Response): Promise<void> => {
         const { take, skip }: QueryPagination = req.query;
         const pagination: PaginationData = new PaginationData(take, skip);
-        console.log(pagination)
         const specRepo = new DataRepository<EntityType>(this.entityType);
         const data = await specRepo.getAll(pagination);
-        console.log(data)
         res.status(200).json(data);
     }
 

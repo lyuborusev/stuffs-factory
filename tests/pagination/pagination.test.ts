@@ -14,7 +14,6 @@ afterAll(async () => {
 
 test('Pagination Default Values', async () => {
     const response = await request(app).get('/parts');
-    console.log(response.body)
 
     expect(response.status).toBe(200);
     expect(response.body.total).toBe(0);
@@ -25,7 +24,6 @@ test('Pagination Default Values', async () => {
 
 test('Pagination Values', async () => {
     const response = await request(app).get('/parts?take=2&skip=5');
-    console.log(response.body)
 
     expect(response.status).toBe(200);
     expect(response.body.total).toBe(0);

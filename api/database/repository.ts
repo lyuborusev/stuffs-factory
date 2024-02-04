@@ -61,7 +61,6 @@ export class DataRepository<EntityType extends ObjectLiteral> {
 
         };
 
-        console.log(result)
         return result;
     }
 
