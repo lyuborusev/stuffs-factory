@@ -58,4 +58,4 @@ Specification - Group: one to many
 Group - Component: one to many
 Component - Part: many to one
 
-[image](db_design.png)
+![image info](./db_design.png)
