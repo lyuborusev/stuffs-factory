@@ -1,4 +1,4 @@
-# A factory called "Stuffs are just Stuffs" produces, well, Stuffs.
+# A factory called "Stuffs are just Stuffs" produces, well, Stuffs
 
 ## Basic tech stack
 
@@ -50,3 +50,12 @@ The generic controlelr is the bread and butter for implementing CRUD operations 
 
 The service is set so that we have valdiatoins on both the request body and request params.
 
+### Database
+
+The database is designed around the main entities - Specification, Group, Components and Parts. The relations are defining a treelike structure as:
+
+Specification - Group: one to many
+Group - Component: one to many
+Component - Part: many to one
+
+[image](db_design.png)
