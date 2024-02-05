@@ -8,6 +8,5 @@ import { Component } from '../component/component.model';
 
 export default [
     new JoiValidator(new PartSchemes()).getRouter(),
-    new RelationResolver<Component>('componentId', 'components', Component).getRouter(),
     new RouterCRUD(new ControllerCRUD(Part)).getRouter()
 ];
